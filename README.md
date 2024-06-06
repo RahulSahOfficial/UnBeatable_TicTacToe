@@ -23,7 +23,7 @@ selecting the best possible move.
 ## Steps to Use
 1. Include game Include file after downlaoding...
 ```cpp
-#include "TickTacToe/Game.cpp"
+#include "TicTacToe/Game.cpp"
 ```
 2. Create the Object
 ```cpp
@@ -40,7 +40,7 @@ Note : `srand(time(0));` for randomly choosing from equal possibilities
 
 ``` cpp
 #include <bits/stdc++.h>
-#include "TickTacToe/Game.cpp"
+#include "TicTacToe/Game.cpp"
 using namespace std;
 int main()
 {
