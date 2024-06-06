@@ -59,5 +59,7 @@ play.exe
 `To Input Consider the grid from 1 to 9 and enter from keyboard`
 ## Preview
 ![Preview 1](images/01.png)
+<br/>
 ![Preview 2](images/02.png)
+<br/>
 ![Preview 3](images/03.png)
