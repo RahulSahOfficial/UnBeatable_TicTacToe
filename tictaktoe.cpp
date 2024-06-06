@@ -5,6 +5,7 @@ class Game{
     
     private:
     int n,filled;
+    int yu=0,me=0;
     string winner;
     bool isGameOver;
     vector<vector<string>> grid;
@@ -14,6 +15,7 @@ class Game{
     vector<int>cpuCol,cpuRow,userCol,userRow;
 
     public:
+    //Constructors
     Game():Game(3){};
     Game(int nSize){
         n=nSize;
@@ -89,7 +91,7 @@ class Game{
 
     }
 
-    void clearState(int x,int y,bool isUser){
+    void clearLastMove(int x,int y,bool isUser){
         filled--;
         if(isUser){
             userCol[y]--;
@@ -148,14 +150,12 @@ class Game{
                     string temp=grid[x][y];
                     grid[x][y]="X";
                     checkState(x,y,true);
-                    if(isGameOver){
-                        if(winner=="User")
-                            score+=val;
-                    }
-                    auto res=getBestMoveCPU(val/2);
-                    score-=res[2];
+                    if(isGameOver && winner=="User")
+                        score+=val;
+                    else
+                        score-=tryCPUAllMove(val/2);
                     maxScore=max(maxScore,score);
-                    clearState(x,y,true);
+                    clearLastMove(x,y,true);
                     grid[x][y]=temp;
                 }
                 
@@ -165,8 +165,32 @@ class Game{
             maxScore=0;
         return maxScore;
     }
-    vector<int> getBestMoveCPU(int val){
+   int tryCPUAllMove(int val){
         int score,maxScore=INT_MIN;
+        for(int x=0;x<n;x++){
+            for(int y=0;y<n;y++){
+                score=0;
+                if(grid[x][y]!="X" && grid[x][y]!="O"){
+                    string temp=grid[x][y];
+                    grid[x][y]="O";
+                    checkState(x,y,false);
+                    if(isGameOver && winner=="CPU")
+                            score+=val;
+                    else
+                        score-=tryUserAllMove(val/2);
+                    maxScore=max(maxScore,score);
+                    clearLastMove(x,y,false);
+                    grid[x][y]=temp;
+                }
+            }
+        }
+        if(maxScore==INT_MIN)
+            maxScore=0;
+        return maxScore;
+    }
+    void getBestCPUMove(){
+        cout<<"CPU MOVE"<<endl;
+        int bestX,bestY,score,maxScore=INT_MIN,idx,val=1<<30;
         vector<pair<int,int>> poss;
         for(int x=0;x<n;x++){
             for(int y=0;y<n;y++){
@@ -175,11 +199,10 @@ class Game{
                     string temp=grid[x][y];
                     grid[x][y]="O";
                     checkState(x,y,false);
-                    if(isGameOver){
-                        if(winner=="CPU")
-                            score+=val;
-                    }
-                    score-=tryUserAllMove(val/2);
+                    if(isGameOver && winner=="CPU")
+                        score+=val;
+                    else
+                        score-=tryUserAllMove(val/2);
                     if(score==maxScore)
                         poss.push_back({x,y});
                     else if(score>maxScore){
@@ -187,35 +210,25 @@ class Game{
                         poss.clear();
                         poss.push_back({x,y});
                     }
-                    clearState(x,y,false);
+                    clearLastMove(x,y,false);
                     grid[x][y]=temp;
-                    // if(val==100000)
-                    //     cout<<x<<" "<<y<<" "<<score<<endl;
                 }
             }
         }
-        if(maxScore==INT_MIN){
-            return {0,0,0};
-        }
-        int l=poss.size();
-        int idx=rand()%l;
-        return{poss[idx].first,poss[idx].second,maxScore};
-    }
-    void cpuNextMove(){
-        cout<<"CPU MOVe"<<endl;
-        vector<int> res=getBestMoveCPU(100000);
-        int cpuX=res[0],cpuY=res[1],score=res[2];
-        cout<<score<<endl;
-        grid[cpuX][cpuY]="O";
-        checkState(cpuX,cpuY,false);
+
+        idx=rand()%poss.size();
+        bestX=poss[idx].first;
+        bestY=poss[idx].second;
+        grid[bestX][bestY]="O";
+        checkState(bestX,bestY,false);
     }
     void play(){
         while(!isGameOver){
             display();
-            if(filled%2==0)
+            if(filled%2==1)
                 input();
             else
-                cpuNextMove();
+                getBestCPUMove();
         }
         display();
         if(winner=="DRAW")
@@ -223,7 +236,6 @@ class Game{
         else
             cout<<"Winner : "<<winner;
     }
-
 };
 
 int main()
