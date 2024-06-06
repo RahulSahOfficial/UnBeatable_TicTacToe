@@ -6,27 +6,24 @@ class Game
 private:
     int n, filled;
     bool userFirst;
-    string winner;
+    string winner,gameLine;
     bool isGameOver;
-    vector<vector<string>> grid;
+    vector<vector<char>> grid;
 
     // For win Loose Detection O(1)
     int cpuLeftDiag, cpuRightDiag, userLeftDiag, userRightDiag;
     vector<int> cpuCol, cpuRow, userCol, userRow;
 
 public:
-    // Constructors
-    Game() : Game(3,false){};
-    Game(bool userPlayFirst) : Game(3,userPlayFirst){};
-    Game(int n) : Game(n,false){};
-    Game(int nSize,bool userPlayFirst)
+    // Constructor
+    Game(int nSize=3,bool userPlayFirst=false)
     {
         n = nSize;
         filled = 0;
         winner = "";
         userFirst=userPlayFirst;
         isGameOver = false;
-        grid.resize(n, vector<string>(n, "0"));
+        grid.resize(n, vector<char>(n, ' '));
 
         cpuCol.resize(n, 0);
         cpuRow.resize(n, 0);
@@ -37,16 +34,11 @@ public:
         userLeftDiag = 0;
         userRightDiag = 0;
 
-        // Setting Board
-        int cnt = 0;
-        for (int i = 0; i < n; i++)
-        {
-            for (int j = 0; j < n; j++)
-            {
-                cnt++;
-                grid[i][j] = to_string(cnt);
-            }
-        }
+        //generating Game Line
+        gameLine=" ";
+        for(int i=0;i<3*n+n+1;i++)
+            gameLine+="-";
+
     }
     void display();
     void checkState(int, int, bool);

@@ -9,9 +9,9 @@ void Game::input()
         cin >> inp;
         x = (inp - 1) / n;
         y = (inp - 1) % n;
-        if (x >= 0 && x < n && y >= 0 && y < n && grid[x][y] == to_string(inp))
+        if (x >= 0 && x < n && y >= 0 && y < n && grid[x][y] == ' ')
         {
-            grid[x][y] = "X";
+            grid[x][y] = 'X';
             inputSuccessful = true;
             checkState(x, y, true);
         }

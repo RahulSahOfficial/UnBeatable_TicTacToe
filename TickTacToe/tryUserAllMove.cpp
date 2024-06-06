@@ -6,10 +6,10 @@ int Game::tryUserAllMove(int val)
         for (int y = 0; y < n; y++)
         {
             score = 0;
-            if (grid[x][y] != "X" && grid[x][y] != "O")
+            if (grid[x][y] != 'X' && grid[x][y] != 'O')
             {
-                string temp = grid[x][y];
-                grid[x][y] = "X";
+                char temp = grid[x][y];
+                grid[x][y] = 'X';
                 checkState(x, y, true);
                 if (isGameOver && winner == "User")
                     score += val;

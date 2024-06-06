@@ -8,10 +8,10 @@ void Game::getBestCPUMove()
         for (int y = 0; y < n; y++)
         {
             score = 0;
-            if (grid[x][y] != "X" && grid[x][y] != "O")
+            if (grid[x][y] != 'X' && grid[x][y] != 'O')
             {
-                string temp = grid[x][y];
-                grid[x][y] = "O";
+                char temp = grid[x][y];
+                grid[x][y] = 'O';
                 checkState(x, y, false);
                 if (isGameOver && winner == "CPU")
                     score += val;
@@ -33,6 +33,6 @@ void Game::getBestCPUMove()
     idx = rand() % poss.size();
     bestX = poss[idx].first;
     bestY = poss[idx].second;
-    grid[bestX][bestY] = "O";
+    grid[bestX][bestY] = 'O';
     checkState(bestX, bestY, false);
 }

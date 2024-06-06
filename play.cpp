@@ -6,7 +6,7 @@ int main()
 {
     srand(time(0));
     bool userPlayFirst=true;
-    Game *g = new Game(userPlayFirst);
+    Game *g = new Game(3,userPlayFirst);
     g->play();
     return 0;
 }
